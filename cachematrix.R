@@ -1,15 +1,36 @@
-## Put comments here that give an overall description of what your
-## functions do
+# This function creates a matrix object that can cashe its inverse
+# It sets the value of the matrix, gets the value of matrix, sets the value of the inverse 
+# matrix and gets the value of the inverse matrix.
 
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCasheMatrix <- function(x = matrix()) {
+  invs <- NULL
+  set <- function (y) {
+    x <<- y
+    invs <<- NULL
+  }
+  get <- function() x
+  setinverse <- function (inverse) invs <<-inverse
+  getinverse <- function () invs
+  list (set = set, 
+        get = get, 
+        setinverse = setinverse, 
+        getinverse = getinverse)
 }
 
+# Function computes the inverse of the matrix returned by the makeCasheMatrix function
 
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+casheSolve <- function(x, ...) {
+  invs <- x$getinverse()
+  if(!is.null(invs)) {
+    message("Getting cashed data")
+    return(invs)
+  }
+  data <- x$get()
+  invs <- solve (data,...)
+  x$setinverse(invs)
+  invs
 }
+  
+# Trial:
+# example <- makeCasheMatrix(matrix(c(4,7,2,6,5,3,5,6,2), nrow=3,ncol=3))
+# casheSolve(example)
